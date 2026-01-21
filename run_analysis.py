@@ -11,13 +11,17 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from scipy.stats import spearmanr
 
+
+model = dna_client.create(config.API_KEY)
+vcf = pysam.VariantFile(config.VCF_PATH)
+
 predictor = AlphaGenomePredictor(
     model, 
     dna_client, 
     genome, 
     window_size=config.WINDOW_SIZE
 )
-results_df = predictor.analyze_vcf(config.VCF_PATH, desc="Analysing")
+results_df = predictor.analyze_vcf(vcf, desc="Analysing")
 
 #agg
 summary_df = results_df.groupby('gene').agg({
